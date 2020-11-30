@@ -1,0 +1,32 @@
+{
+    "id": "2FF6E40B",
+    "path": null,
+    "project_path": null,
+    "type": "r_dataframe",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1606648442666.0,
+    "source_on_save": false,
+    "relative_order": 7,
+    "properties": {
+        "expression": "books_raw",
+        "caption": "books_raw",
+        "totalObservations": "11127",
+        "displayedObservations": "11127",
+        "variables": "12",
+        "cacheKey": "B09C79D0",
+        "object": "books_raw",
+        "environment": "",
+        "contentUrl": "grid_resource/gridviewer.html?env=&obj=books_raw&cache_key=B09C79D0&max_cols=50",
+        "preview": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 140360919894116,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1606648442666,
+    "read_only": false,
+    "read_only_alternatives": []
+}

@@ -1,0 +1,116 @@
+---
+title: "`dplyr` Weekend Homework- Graeme Anderson"
+output: html_notebook
+---
+
+1. How many books per language
+2. How many books per author
+3. Average rating per author
+   Number of ratings per author
+4. Correlation between number of pages and number of ratings
+5.Text review, number of ratings and average rating
+
+
+# Cleaning dataset
+
+ 
+
+```{r}
+library(tidyverse)
+```
+
+
+```{r}
+#load dataset
+books_raw <- read.csv("data/books.csv")
+#clean dataset
+books_clean  %>% 
+  #Select columns needed
+  select("title", "authors", "average_rating", "language_code", "num_pages", "ratings_count", "text_reviews_count") #%>% 
+  #convert average_rating back to double (changed in csv whilst having problems loading books.csv)
+  mutate(books_clean, average_rating = average_rating / 100)
+
+#  
+unique(books_raw$language_code)
+glimpse(books_clean)
+
+
+```
+# 1 How many books per language
+
+
+
+```{r}
+#group books by language then sum totals. Used unique() to check variable types
+books_by_lang<- select(books_clean, language_code) %>% 
+  group_by(language_code) %>% 
+  tally(sort = TRUE, name = "No. of books")
+books_by_lang
+```
+
+# 2 How many books per author (English only)
+
+
+(filtered to only english ("eng, "en-US", "en-GB", "en-CA") for simplicity)
+```{r}
+books_by_author <- select(books_clean, authors, language_code) %>% 
+  #select only books that have englishas language from language code ()
+  filter(language_code %in% c("eng", "en-US", "en-GB", "en-CA")) %>% 
+  group_by(authors) %>% 
+  tally(sort = TRUE, name = "No. of books")
+books_by_author
+
+```
+
+# 3 Average rating per author
+
+```{r}
+ave_rating_table <- select(books_clean, authors, average_rating) %>% 
+  #group by author
+  group_by(authors) %>%                         
+  # add average rating for all books by each other then create average rating for each author
+  summarise_at(vars("average_rating"),              
+               list(total_average_rating = mean)) %>% 
+  arrange(ave_rating_table, (total_average_rating / 100))
+ave_rating
+```
+# 4 Correlation between number of pages and number of ratings
+
+Do people not finish longer books, leading to lower ratings
+
+
+
+
+```{r}
+books_filter_ratings <- books_clean %>% 
+  #ignore >1000 ratings
+  filter(ratings_count > 1000) %>% 
+  #ignore text reviews under 10
+  filter(text_reviews_count > 10)
+
+books_filter_ratings
+
+attach(books_filter_ratings)
+plot(ratings_count, num_pages, main="Scatterplot Example",
+   xlab="no. of ratings ", ylab="no. of pages", pch=19)
+
+attach(books_filter_ratings)
+plot(text_reviews_count, num_pages, main="Scatterplot Example",
+   xlab="no. of text reviews", ylab="no. of pages", pch=19)
+```
+
+# 5 Text review, number of ratings and average rating
+
+Any correlation between number of text reviews, number of ratings and average rating?
+
+Couldn't get to work. Think I've removed values from average_rating so that  x!= y
+```{r}
+attach(books_filter_ratings)
+plot(ratings_count, average_rating, main="",
+   xlab="no. of ratings ", ylab="no. of pages", pch=19)
+
+attach(books_1000)
+plot(text_reviews_count, average_rating, main="Scatterplot Example",
+   xlab="no. of text reviews", ylab="no. of pages", pch=19)
+```
+

@@ -1,0 +1,5 @@
+"0","books_filter_ratings <- books_clean %>% "
+"0","  filter(ratings_count > 1000) %>% "
+"0","  filter(text_reviews_count > 10)"
+"0",""
+"0","books_filter_ratings"

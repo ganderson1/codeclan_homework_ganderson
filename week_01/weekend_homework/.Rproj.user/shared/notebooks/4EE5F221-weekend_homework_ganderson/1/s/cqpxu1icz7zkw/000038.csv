@@ -1,0 +1,89 @@
+"0",""
+"0","attach(books_filter_ratings)"
+"2","The following object is masked _by_ .GlobalEnv:
+
+    average_rating
+
+"
+"2","The following objects are masked from books_filter_ratings (pos = 3):
+
+    authors, average_rating, language_code, num_pages, ratings_count, text_reviews_count, title
+
+"
+"2","The following objects are masked from books_filter_ratings (pos = 4):
+
+    authors, average_rating, language_code, num_pages, ratings_count, text_reviews_count, title
+
+"
+"2","The following objects are masked from books_filter_ratings (pos = 5):
+
+    authors, average_rating, language_code, num_pages, ratings_count, text_reviews_count, title
+
+"
+"2","The following objects are masked from books_filter_ratings (pos = 6):
+
+    authors, average_rating, language_code, num_pages, ratings_count, text_reviews_count, title
+
+"
+"2","The following objects are masked from books_filter_ratings (pos = 7):
+
+    authors, average_rating, language_code, num_pages, ratings_count, text_reviews_count, title
+
+"
+"2","The following objects are masked from books_filter_ratings (pos = 8):
+
+    authors, average_rating, language_code, num_pages, ratings_count, text_reviews_count, title
+
+"
+"2","The following objects are masked from books_1000 (pos = 9):
+
+    authors, average_rating, language_code, num_pages, ratings_count, text_reviews_count, title
+
+"
+"2","The following objects are masked from books_filter_ratings (pos = 10):
+
+    authors, average_rating, language_code, num_pages, ratings_count, text_reviews_count, title
+
+"
+"2","The following objects are masked from books_1000 (pos = 11):
+
+    authors, average_rating, language_code, num_pages, ratings_count, text_reviews_count, title
+
+"
+"2","The following objects are masked from books_filter_ratings (pos = 12):
+
+    authors, average_rating, language_code, num_pages, ratings_count, text_reviews_count, title
+
+"
+"2","The following objects are masked from books_1000 (pos = 13):
+
+    authors, average_rating, language_code, num_pages, ratings_count, text_reviews_count, title
+
+"
+"2","The following objects are masked from books_1000 (pos = 14):
+
+    authors, average_rating, language_code, num_pages, ratings_count, text_reviews_count, title
+
+"
+"2","The following objects are masked from books_1000 (pos = 15):
+
+    authors, average_rating, language_code, num_pages, ratings_count, text_reviews_count, title
+
+"
+"2","The following objects are masked from books_1000 (pos = 16):
+
+    authors, average_rating, language_code, num_pages, ratings_count, text_reviews_count, title
+
+"
+"2","The following objects are masked from books_1000 (pos = 17):
+
+    authors, average_rating, language_code, num_pages, ratings_count, text_reviews_count, title
+
+"
+"2","The following objects are masked from books_1000 (pos = 18):
+
+    authors, average_rating, language_code, num_pages, ratings_count, text_reviews_count, title
+
+"
+"0","plot(text_reviews_count, num_pages, main=""Scatterplot Example"","
+"0","   xlab=""no. of text reviews"", ylab=""no. of pages"", pch=19)"

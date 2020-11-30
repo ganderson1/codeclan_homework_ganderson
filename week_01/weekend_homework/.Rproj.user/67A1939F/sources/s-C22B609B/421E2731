@@ -1,0 +1,32 @@
+{
+    "id": "421E2731",
+    "path": null,
+    "project_path": null,
+    "type": "r_dataframe",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1606612052785.0,
+    "source_on_save": false,
+    "relative_order": 4,
+    "properties": {
+        "expression": "books_clean",
+        "caption": "books_clean",
+        "totalObservations": "11120",
+        "displayedObservations": "11120",
+        "variables": "7",
+        "cacheKey": "512CABBB",
+        "object": "books_clean",
+        "environment": "",
+        "contentUrl": "grid_resource/gridviewer.html?env=&obj=books_clean&cache_key=512CABBB&max_cols=50",
+        "preview": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 3976751331954210115,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1606612052785,
+    "read_only": false,
+    "read_only_alternatives": []
+}

@@ -1,0 +1,32 @@
+{
+    "id": "29CA0A88",
+    "path": null,
+    "project_path": null,
+    "type": "r_dataframe",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1606648428506.0,
+    "source_on_save": false,
+    "relative_order": 6,
+    "properties": {
+        "expression": "books_filter_ratings",
+        "caption": "books_filter_ratings",
+        "totalObservations": 5102,
+        "displayedObservations": 5102,
+        "variables": 7,
+        "cacheKey": "C58F3776",
+        "object": "books_filter_ratings",
+        "environment": "",
+        "contentUrl": "grid_resource/gridviewer.html?env=&obj=books_filter_ratings&cache_key=C58F3776&max_cols=50",
+        "preview": 0
+    },
+    "folds": "",
+    "lastKnownWriteTime": 0,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1606648428506,
+    "read_only": false,
+    "read_only_alternatives": []
+}

@@ -1,0 +1,6 @@
+"0","ave_rating_table <- select(books_clean, authors, average_rating) %>% "
+"0","  group_by(authors) %>%                         # Specify group indicator"
+"0","  summarise_at(vars(""average_rating""),              # Specify column"
+"0","               list(total_average_rating = mean)) %>% "
+"0","  arrange(ave_rating_table, (total_average_rating / 100))"
+"0","ave_rating"

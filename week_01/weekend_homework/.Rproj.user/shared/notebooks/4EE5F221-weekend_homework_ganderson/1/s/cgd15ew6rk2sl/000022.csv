@@ -1,0 +1,5 @@
+"0","books_by_author <- select(books_clean, authors, language_code) %>% "
+"0","  filter(language_code %in% c(""eng"", ""en-US"", ""en-GB"", ""en-CA"")) %>% "
+"0","  group_by(authors) %>% "
+"0","  tally(sort = TRUE, name = ""No. of books"")"
+"0","books_by_author"

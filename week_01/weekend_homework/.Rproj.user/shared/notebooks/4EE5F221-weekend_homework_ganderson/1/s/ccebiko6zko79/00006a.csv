@@ -1,0 +1,3 @@
+"0","books_raw <- read.csv(""data/books.csv"")"
+"0","books_clean  %>% "
+"0","  select(""title"", ""authors"", ""average_rating"", ""language_code"", ""num_pages"", ""ratings_count"", ""text_reviews_count"") #%>% "

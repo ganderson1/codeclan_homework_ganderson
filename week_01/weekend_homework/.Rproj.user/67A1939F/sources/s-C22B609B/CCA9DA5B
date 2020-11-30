@@ -1,0 +1,32 @@
+{
+    "id": "CCA9DA5B",
+    "path": null,
+    "project_path": null,
+    "type": "r_dataframe",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1606648519522.0,
+    "source_on_save": false,
+    "relative_order": 9,
+    "properties": {
+        "expression": "ave_rating_table",
+        "caption": "ave_rating_table",
+        "totalObservations": 6640,
+        "displayedObservations": 6640,
+        "variables": 2,
+        "cacheKey": "0C9A1191",
+        "object": "ave_rating_table",
+        "environment": "",
+        "contentUrl": "grid_resource/gridviewer.html?env=&obj=ave_rating_table&cache_key=0C9A1191&max_cols=50",
+        "preview": 0
+    },
+    "folds": "",
+    "lastKnownWriteTime": 140359531246902,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1606648519522,
+    "read_only": false,
+    "read_only_alternatives": []
+}

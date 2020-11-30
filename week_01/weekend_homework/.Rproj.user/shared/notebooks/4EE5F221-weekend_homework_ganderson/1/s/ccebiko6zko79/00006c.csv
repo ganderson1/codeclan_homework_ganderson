@@ -1,0 +1,1 @@
+"0","  mutate(books_clean, average_rating = average_rating / 100)"
