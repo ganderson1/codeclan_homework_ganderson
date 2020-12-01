@@ -1,0 +1,5 @@
+"0","trans_fraud <- left_join(fraud_base, trans_base, by = ""Transaction_ID"") #%>% view()"
+"0","card_fraud <- left_join(trans_fraud, card_base, by = ""Credit_Card_ID"") "
+"0","cust_fraud <- left_join(card_fraud, cust_base, by = ""Cust_ID"") "
+"0","cust_fraud_arr <- cust_fraud[, c(8, 12, 9, 1, 10, 11, 2, 3, 4, 5, 6, 7)]"
+"0","cust_fraud_arr"

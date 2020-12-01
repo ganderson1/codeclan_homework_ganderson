@@ -1,0 +1,20 @@
+"0","```r
+customers <- tibble(
+  customer_ID = c(001, 002, 004, 005, 008, 010), 
+  name = c(\"John Smith\", \"Jane Adams\", \"Robert Landry\", \"Jane Tow\", \"Raul Tann\", \"Hilary Joyal\"),
+  email_address = c(\"johnsmith@gmail.com\", \"janea@gmail.com\", \"rlabdry@hotmail.com\", \"janet89@aol.com\", \"paul.tann1@gmail.com\", NA),
+  shipping_address = c(\"32 Station Road, Edinburgh\", \"42 Park Drive, Edinburgh\", NA, \"10 Gardiner Rd, Edinburgh\", \"12 Main St, Edinburgh\", \" 234 Queensferry Rd, Edinburgh,\")
+)
+
+orders <- tibble(
+  customer_ID = c(001, 002, 005, 010, 012, 001), 
+  order_number = c(\"KU65781\", \"SU98201\", \"JS76821\", \"YR28212\", \"JS91221\",\"YR21873\"),
+  order_total = c(\"£32.50\", \"£56.00\", \"£100.02\", \"£20.25\", \"£39.50\", \"£45.00\"),
+  product_code = c(\"XZY780\", \"XYZ123\", \"XYZ256\", \"XYZ262\", \"XYZ345\", \"XYZ127\")
+)
+
+customers2 <- customers %>% 
+  mutate(payment_type = c(\"card\", \"cash\", \"cash\", \"card\", \"card\", \"card\"))
+orders2 <- orders %>%
+  mutate(payment_type = c(\"card\", \"cash\", \"cash\", \"card\", \"card\", \"cash\"))
+```"

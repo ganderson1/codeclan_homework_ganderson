@@ -1,0 +1,17 @@
+"0","```r
+
+hospital_visits <- read_csv(\"data/hospitals93to98.csv\")
+```"
+"1","
+── Column specification ─────────────────────────────────────────────────────────────────────
+cols(
+  IcdChapter = col_character(),
+  Field = col_character(),
+  FY1993 = col_number(),
+  FY1994 = col_number(),
+  FY1995 = col_number(),
+  FY1996 = col_number(),
+  FY1997 = col_number(),
+  FY1998 = col_number()
+)
+"

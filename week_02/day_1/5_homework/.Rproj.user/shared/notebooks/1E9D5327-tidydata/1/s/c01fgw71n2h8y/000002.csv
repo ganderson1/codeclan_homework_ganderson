@@ -1,0 +1,8 @@
+"0","```r
+income <- tibble(religion = c(\"Agnostic\",\"Atheist\",\"Buddhist\", \"Catholic\"), 
+  X10k = c(12,25,3,75), 
+  X10k_to_20k = c(34,14,6,60),
+  X20k_to_30k = c(45,22,10,110))
+
+income
+```"

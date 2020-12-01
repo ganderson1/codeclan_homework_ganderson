@@ -1,0 +1,9 @@
+"0","```r
+
+clean_orders %>% 
+  unite(
+    col = \"order_info\",
+    c(order_number, date),
+    sep = \"/\"
+  )
+```"

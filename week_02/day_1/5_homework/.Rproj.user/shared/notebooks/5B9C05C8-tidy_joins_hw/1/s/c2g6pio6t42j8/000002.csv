@@ -1,0 +1,44 @@
+"0","card_base <- read_csv(""data/CardBase.csv"")"
+"2","
+[36m──[39m [1m[1mColumn specification[1m[22m [36m─────────────────────────────────────────────────────────────────────[39m
+cols(
+  Card_Number = [31mcol_character()[39m,
+  Card_Family = [31mcol_character()[39m,
+  Credit_Limit = [32mcol_double()[39m,
+  Cust_ID = [31mcol_character()[39m
+)
+
+"
+"0","cust_base <- read_csv(""data/CustomerBase.csv"")"
+"2","
+[36m──[39m [1m[1mColumn specification[1m[22m [36m─────────────────────────────────────────────────────────────────────[39m
+cols(
+  Cust_ID = [31mcol_character()[39m,
+  Age = [32mcol_double()[39m,
+  Customer_Segment = [31mcol_character()[39m,
+  Customer_Vintage_Group = [31mcol_character()[39m
+)
+
+"
+"0","fraud_base <- read_csv(""data/FraudBase.csv"")"
+"2","
+[36m──[39m [1m[1mColumn specification[1m[22m [36m─────────────────────────────────────────────────────────────────────[39m
+cols(
+  Transaction_ID = [31mcol_character()[39m,
+  Fraud_Flag = [32mcol_double()[39m
+)
+
+"
+"0","trans_base <- read_csv(""data/TransactionBase.csv"")"
+"2","
+[36m──[39m [1m[1mColumn specification[1m[22m [36m─────────────────────────────────────────────────────────────────────[39m
+cols(
+  Transaction_ID = [31mcol_character()[39m,
+  Transaction_Date = [31mcol_character()[39m,
+  Credit_Card_ID = [31mcol_character()[39m,
+  Transaction_Value = [32mcol_double()[39m,
+  Transaction_Segment = [31mcol_character()[39m
+)
+
+"
+"0","names(card_base)[names(card_base) == ""Card_Number""] <- ""Credit_Card_ID"""

@@ -1,0 +1,19 @@
+"0","```r
+
+hospital_visits %>% 
+  separate(
+    col = IcdChapter,
+    into = c(\"icd_id\", \"icd_chapter\"), 
+    sep = \"\\.\"
+      
+  ) %>% 
+  pivot_longer(
+    cols = FY1993:FY1998,
+    names_to = \"year\",
+    values_to = \"number_of_visits\"
+  ) %>% 
+  pivot_wider(
+    names_from = Field,
+    values_from = number_of_visits,
+  )
+```"

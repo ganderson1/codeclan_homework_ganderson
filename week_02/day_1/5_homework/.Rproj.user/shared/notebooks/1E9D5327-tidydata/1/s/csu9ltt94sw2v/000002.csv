@@ -1,0 +1,8 @@
+"0","```r
+income %>% 
+  pivot_longer(
+    cols = c(X10k, X10k_to_20k, X20k_to_30k),
+    names_to = \"income_bracket\",
+    values_to = \"count\",
+  )
+```"

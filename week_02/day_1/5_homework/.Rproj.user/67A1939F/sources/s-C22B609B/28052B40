@@ -1,0 +1,32 @@
+{
+    "id": "28052B40",
+    "path": null,
+    "project_path": null,
+    "type": "r_dataframe",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1606762491274.0,
+    "source_on_save": false,
+    "relative_order": 12,
+    "properties": {
+        "expression": "cust_fraud",
+        "caption": "cust_fraud",
+        "totalObservations": "109",
+        "displayedObservations": "109",
+        "variables": "12",
+        "cacheKey": "D1751F30",
+        "object": "cust_fraud",
+        "environment": "",
+        "contentUrl": "grid_resource/gridviewer.html?env=&obj=cust_fraud&cache_key=D1751F30&max_cols=50",
+        "preview": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 3834311790674658355,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1606762491274,
+    "read_only": false,
+    "read_only_alternatives": []
+}

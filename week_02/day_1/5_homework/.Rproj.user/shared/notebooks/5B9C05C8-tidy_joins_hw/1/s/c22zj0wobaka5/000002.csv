@@ -1,0 +1,1 @@
+"0","inner_join(cust_base, card_base, by = ""Cust_ID"") %>%  view()"

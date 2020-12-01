@@ -1,0 +1,11 @@
+"0","```r
+clean_orders <-
+messy_orders %>% 
+  separate(
+    col = order_info,
+    into = c(\"order_number\", \"date\"),
+    sep = \"/\"
+  )
+
+clean_orders
+```"

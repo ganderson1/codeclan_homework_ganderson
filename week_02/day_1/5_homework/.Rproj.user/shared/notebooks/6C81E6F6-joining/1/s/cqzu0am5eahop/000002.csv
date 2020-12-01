@@ -1,0 +1,4 @@
+"0","```r
+bind_cols(customers, statuses) %>% view()
+
+```"

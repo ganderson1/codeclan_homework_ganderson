@@ -1,0 +1,32 @@
+{
+    "id": "056F776F",
+    "path": null,
+    "project_path": null,
+    "type": "r_dataframe",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1606752726789.0,
+    "source_on_save": false,
+    "relative_order": 5,
+    "properties": {
+        "expression": "cust_base",
+        "caption": "cust_base",
+        "totalObservations": "5674",
+        "displayedObservations": "5674",
+        "variables": "4",
+        "cacheKey": "5DCBBA0F",
+        "object": "cust_base",
+        "environment": "",
+        "contentUrl": "grid_resource/gridviewer.html?env=&obj=cust_base&cache_key=5DCBBA0F&max_cols=50",
+        "preview": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 140254849862032,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1606752726789,
+    "read_only": false,
+    "read_only_alternatives": []
+}

@@ -1,0 +1,100 @@
+---
+title: "Joining Mini-Lab"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+    df_print: paged
+    css: ../../../styles.css
+  pdf_document: default
+---
+
+**Duration: 15 minutes** 
+
+Use the three datasets `actors.csv`, `movies.csv` and `roles.csv` to answer the following questions.
+
+
+```{r}
+library(tidyverse)
+actors <- read_csv("data/actors.csv")
+movies <- read_csv("data/movies.csv")
+roles <- read_csv("data/roles.csv")
+
+
+names(movies)[names(movies) == "id"] <- "movie_id"
+names(actors)[names(actors) == "id"] <- "actor_id"
+
+```
+
+
+
+#
+
+List all the roles, along with the actors who played each role in The Little Mermaid. (In the data as "Little Mermaid, The")
+
+```{r}
+
+
+movie_roles <- left_join(movies, roles, by = "movie_id") #%>% view()
+movie_actors <- left_join(movie_roles, actors, by = "actor_id") %>% view()
+
+question_one <- filter(movie_actors, name == "Little Mermaid, The") %>% 
+  select(role, first_name, last_name) %>% 
+  arrange(desc(role)) %>% 
+  view()
+question_one
+
+
+```
+```{r}
+roles %>% 
+  filter(movie_id == 192017) %>% 
+  inner_join(actors, by c("actor_id" = "id"))
+```
+
+#
+
+Find the actor who has appeared in most films. List the films they appeared in, the year the film was released and their role in the film.
+
+```{r}
+question_two <- select(movie_actors, name, year, role, first_name, last_name, film_count) %>% 
+  arrange(desc(film_count)) %>% 
+  view()
+question_two
+```
+```{r}
+actors %>% 
+  arrange(desc(film_count))
+
+```
+```{r}
+roles %>% 
+  filter(actor_id == 22591) %>% 
+  left_join(movie, by = c("movie_id"  = "id")) %>% 
+  select(name, year, role)
+```
+
+#
+
+For all actors who have appeared in at least two films, find the average rating of the films they appeared. Find the five actors with the highest average rank of films they appeared in.
+
+```{r}
+
+movie_actors <- movie_actors %>% 
+  janitor::clean_names() %>% 
+  drop_na()
+
+question_three <- select(movie_actors, name, rank, first_name, last_name, film_count) %>%
+  filter( film_count >= 2) %>% 
+  group_by(last_name) %>% 
+  summarise_at(vars("rank"),              
+               list("total average rank" = mean)) %>% 
+  arrange(question_three, ("total average rank")) %>%  
+  arrange(desc("total averange rank")) #%>% 
+  #summarise_at(vars(rank),              
+               #list(total_average_rating = mean)) %>% 
+ # arrange(question_three, (total_average_rating ))
+
+question_three
+```

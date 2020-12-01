@@ -1,0 +1,5 @@
+"0","```r
+statuses <- tibble(
+  status = c(\"active\", \"active\", \"inactive\", \"inactive\", \"active\", \"inactive\")
+) 
+```"

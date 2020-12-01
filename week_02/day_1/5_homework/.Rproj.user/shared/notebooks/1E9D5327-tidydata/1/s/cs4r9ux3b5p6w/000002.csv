@@ -1,0 +1,8 @@
+"0","```r
+
+messy_orders <- tibble( name = c(\"Joe Bloggs\",\"Jane Smith\",\"Penny Jones\"), 
+  order_info = c(\"XY7282/29-06-19\",\"LO0182/15-03-19\",\"AS6812/04-06-19\"), 
+  order_amount = c(58.00,125.00,75.25))
+
+messy_orders
+```"

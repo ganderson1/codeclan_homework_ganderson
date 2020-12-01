@@ -1,0 +1,2 @@
+"0","left_join(trans_base, fraud_base, by = ""Transaction_ID"") %>%  view()"
+"0",""

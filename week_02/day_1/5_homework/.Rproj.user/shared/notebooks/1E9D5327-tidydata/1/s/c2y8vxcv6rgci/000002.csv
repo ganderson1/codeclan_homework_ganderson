@@ -1,0 +1,8 @@
+"0","```r
+subject_hr %>% 
+  pivot_longer(
+    cols = c(hr_am, hr_pm),
+    names_to = \"measurement_time\",
+    values_to = \"heartrate\",
+  )
+```"

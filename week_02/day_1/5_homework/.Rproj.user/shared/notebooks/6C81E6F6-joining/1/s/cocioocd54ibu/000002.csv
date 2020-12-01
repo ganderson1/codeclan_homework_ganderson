@@ -1,0 +1,8 @@
+"0","```r
+past_customers <- tibble(
+  customer_ID = c(020, 021), 
+  name = c(\"Dave Brown\", \"Jess Bishop\"),
+  email_address = c(\"dbrown@hotmail.com\", \"jessb@gmail.com\"),
+  shipping_address = c(\"57 Park View, Leith\", \"12 Reid Way, Broxburn\")
+)
+```"
