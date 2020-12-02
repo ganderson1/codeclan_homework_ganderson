@@ -1,0 +1,6 @@
+"0","mean(str_count(tweets, ""text""), na.rm = FALSE)#%>% "
+"2","argument is not an atomic vector; coercing"
+"1","[1]"
+"1"," 0"
+"1","
+"

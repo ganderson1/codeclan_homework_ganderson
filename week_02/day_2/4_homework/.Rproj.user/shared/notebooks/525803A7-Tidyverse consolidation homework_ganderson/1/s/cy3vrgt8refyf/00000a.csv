@@ -1,0 +1,1 @@
+"0","tweets_info <- full_join(tweets, info, by = ""tweet_id"")"

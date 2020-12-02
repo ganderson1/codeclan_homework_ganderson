@@ -1,0 +1,56 @@
+"0","info <- read_csv(""data/code_clan_info.csv"") %>%  clean_names()"
+"2","
+[36m──[39m [1m[1mColumn specification[1m[22m [36m───────────────────────────────────────────────────────────────────────────[39m
+cols(
+  tweet_id = [32mcol_double()[39m,
+  status_url = [31mcol_character()[39m,
+  name = [31mcol_character()[39m,
+  location = [31mcol_character()[39m,
+  description = [31mcol_character()[39m,
+  url = [31mcol_character()[39m,
+  protected = [33mcol_logical()[39m,
+  followers_count = [32mcol_double()[39m,
+  friends_count = [32mcol_double()[39m,
+  listed_count = [32mcol_double()[39m,
+  statuses_count = [32mcol_double()[39m,
+  favourites_count = [32mcol_double()[39m,
+  account_created_at = [31mcol_character()[39m,
+  verified = [33mcol_logical()[39m,
+  profile_url = [31mcol_character()[39m
+)
+
+"
+"0","names(info)"
+"1"," [1]"
+"1"," ""tweet_id""          "
+"1"," ""status_url""        "
+"1"," ""name""              "
+"1"," ""location""          "
+"1","
+"
+"1"," [5]"
+"1"," ""description""       "
+"1"," ""url""               "
+"1"," ""protected""         "
+"1"," ""followers_count""   "
+"1","
+"
+"1"," [9]"
+"1"," ""friends_count""     "
+"1"," ""listed_count""      "
+"1"," ""statuses_count""    "
+"1"," ""favourites_count""  "
+"1","
+"
+"1","[13]"
+"1"," ""account_created_at"""
+"1"," ""verified""          "
+"1"," ""profile_url""       "
+"1","
+"
+"0","dim(info)"
+"1","[1]"
+"1"," 234"
+"1","  15"
+"1","
+"

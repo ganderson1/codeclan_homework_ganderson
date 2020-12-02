@@ -1,0 +1,32 @@
+{
+    "id": "84723423",
+    "path": null,
+    "project_path": null,
+    "type": "r_dataframe",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1606867793472.0,
+    "source_on_save": false,
+    "relative_order": 5,
+    "properties": {
+        "expression": "tweets_info",
+        "caption": "tweets_info",
+        "totalObservations": "234",
+        "displayedObservations": "234",
+        "variables": "41",
+        "cacheKey": "A717405E",
+        "object": "tweets_info",
+        "environment": "",
+        "contentUrl": "grid_resource/gridviewer.html?env=&obj=tweets_info&cache_key=A717405E&max_cols=50",
+        "preview": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 0,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1606867793472,
+    "read_only": false,
+    "read_only_alternatives": []
+}

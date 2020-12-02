@@ -1,0 +1,7 @@
+"0","tweets %>% "
+"0","  select(favorite_count) %>% "
+"0","  group_by(media_type)"
+"2","Error: Must group by variables found in `.data`.
+* Column `media_type` is not found.
+[90mRun `rlang::last_error()` to see where the error occurred.[39m
+"

@@ -1,0 +1,8 @@
+"0","tweets %>% "
+"0","  filter(retweet_count > 0 & is_quote == FALSE) %>%"
+"0","  group_by(source) %>% "
+"0","  summarise("
+"0","    average_retweet_count = mean(retweet_count)"
+"0","  )"
+"2","`summarise()` ungrouping output (override with `.groups` argument)
+"

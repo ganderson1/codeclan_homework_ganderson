@@ -1,0 +1,68 @@
+---
+title: "rtweet Homework Graeme Anderson"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(janitor)
+
+tweets <- read_csv("data/code_clan_tweets.csv") %>%  clean_names()
+```
+
+1
+```{r}
+#glimpse(tweets)
+names(tweets)
+dim(tweets)
+```
+2
+```{r}
+tweets %>% 
+  filter(favorite_count > 0 & is_quote == FALSE) %>%
+  pull(favorite_count) %>% 
+  sum()
+
+  
+```
+3
+```{r}
+tweets %>% 
+  filter(retweet_count > 0 & is_quote == FALSE) %>%
+  group_by(source) %>% 
+  summarise(
+    average_retweet_count = mean(retweet_count)
+  )
+```
+
+4
+```{r}
+tweets %>% 
+  select(favorite_count) %>% 
+  group_by(media_type)
+```
+5
+```{r}
+tweets %>% 
+  select(text) %>% 
+  nchar(text, type = "chars") #%>% 
+#mean(str_count(tweets, "text"), na.rm = FALSE)#%>
+
+```
+
+6
+```{r}
+info <- read_csv("data/code_clan_info.csv") %>%  clean_names()
+
+names(info)
+dim(info)
+```
+
+```{r}
+tweets_info <- full_join(tweets, info, by = "tweet_id")
+```
+7
+```{r}
+
+```
+
