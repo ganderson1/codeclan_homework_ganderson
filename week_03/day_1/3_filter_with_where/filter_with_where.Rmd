@@ -1,0 +1,506 @@
+---
+title: "Queries Part 1 - Filtering with `WHERE`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+    df_print: paged
+    css: ../../../styles.css
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align = 'center')
+```
+
+# Learning Objectives  
+
+* Be able to use additional comparison operators, and `AND` and `OR` combinations
+* Write queries using `BETWEEN`, `NOT` and `IN`
+* Understand and be able to use inexact comparisons with `LIKE` and wildcards
+* Understand `IS NULL`
+
+**Duration - 90 minutes**  
+
+# Introduction
+
+As stated earlier, data analysts more often read records in databases than create, update or delete them (recall CRUD). So, it makes sense to focus effort on learning `SELECT` syntax beyond the simple `WHERE` clauses we saw in the last lesson.  
+  
+We'll work through a series of examples using a database storing employee information for the world-spanning 'OmniCorp' corporation.   
+
+As you will see, the most difficult task faced by data analyst is often to take a 'business question', framed in the context and logic of an organisation, and render it into a 'data question', i.e. a question that can be answered by interrogating data. It's a deeply practical skill that improves with experience.  
+
+Let's get started!  
+
+# Setup
+
+First, we need to create a connection to the database in `DBeaver`:
+
+<br>
+<blockquote class="task">
+**Task - 10 mins**
+
+Create a connection in `DBeaver` using the following details:
+
+| Connection setting | Value |
+|---|---|
+| Username | omni_user |
+| Password | in2z00yfv3as3hgo |
+| Host | db-postgresql-lon1-94437-do-user-4831272-0.a.db.ondigitalocean.com |
+| Port | 25061 |
+| Database | omni_pool |
+
+```{r, eval=TRUE, include=FALSE, message=FALSE, warning=FALSE}
+library(knitr)
+library(kableExtra)
+library(RPostgres)
+
+db = dbConnect(
+  Postgres(), 
+  user = 'omni_user',
+  password = 'in2z00yfv3as3hgo',
+  dbname = 'omni_pool',
+  host = 'db-postgresql-lon1-94437-do-user-4831272-0.a.db.ondigitalocean.com',
+  port = 25061,
+  sslmode = 'require'
+)
+```
+
+Check that your connection is working by exploring the `employees` table, and then writing and executing a query to return all records from the same table.
+
+<details>
+<summary>**Solution**</summary>
+
+```{sql, connection = db, output.var="out"}
+SELECT * 
+FROM employees;
+```
+```{r, echo=FALSE, eval=TRUE}
+out
+```
+</details>
+</blockquote>
+<br>
+
+# Simple `WHERE` clauses  
+
+So far we've seen pretty simple `WHERE` clauses, e.g. 
+
+<br>
+<center>
+**"Find the employee with `id` equal to 3."**
+</center>
+<br>
+
+```{sql, connection = db, output.var="out"}
+SELECT * 
+FROM employees 
+WHERE id = 3;
+```
+```{r, echo=FALSE, eval=TRUE}
+out
+```
+
+# Additional comparison operators  
+
+OK, but what about this problem:  
+
+<br>
+<center>
+**"Find all the employees working 0.5 full-time equivalent hours or greater."**
+</center>
+<br>
+
+We can solve this using operators other than `=`    
+
+| Operator | Meaning |
+| --- | --- |
+| `!=` | not equal to |
+| `>` | greater than |
+| `<` | less than |
+| `>=` | greater than or equal to |
+| `<=` | less than or equal to |
+
+The correct operator from above is `>=` (greater than or equal to):  
+
+```{sql, connection = db, output.var="out"}
+SELECT * 
+FROM employees 
+WHERE fte_hours >= 0.5;
+```
+```{r, echo=FALSE, eval=TRUE}
+out
+```
+
+<br>
+<blockquote class="task">
+**Task - 2 mins** 
+
+Write and execute a query answering this problem:  
+
+<br>
+<center>
+**"Find all the employees *not* based in Brazil."**
+</center>
+<br>
+
+<details>
+<summary>**Solution**</summary>
+
+```{sql, connection = db, output.var="out"}
+SELECT * 
+FROM employees 
+WHERE country != 'Brazil';
+```
+```{r, echo=FALSE, eval=TRUE}
+out
+```
+
+</details>
+</blockquote>
+<br>
+
+
+# `AND` and `OR` 
+
+If required, we can create more complex clauses using the `AND` and `OR` operators
+
+<br>
+<center>
+**"Find all employees in China who started working for OmniCorp in 2019."**
+</center>
+<br>
+
+```{sql, connection = db, output.var="out"}
+SELECT * 
+FROM employees 
+WHERE country = 'China' AND start_date >= '2019-01-01' AND start_date <= '2019-12-31';
+```
+```{r, echo=FALSE, eval=TRUE}
+out
+```
+
+Sometimes we have to be careful with the **order of evaluation** of conditions. Consider the following example:
+
+<br>
+<center>
+**"Of all the employees based in China, find those who either started working for OmniCorp from 2019 onwards or who are enrolled in the pension scheme."**
+</center>
+<br>
+
+The logic of this as written is fairly clear. All the returned employees should be based in China **and** they should either have started work for OmniCorp from 2019 onwards **or** be enrolled in the pension scheme. Let's have a first go at writing this!
+
+```{sql, connection = db, output.var="out"}
+SELECT * 
+FROM employees 
+WHERE country = 'China' AND start_date >= '2019-01-01' OR pension_enrol = TRUE;
+```
+```{r, echo=FALSE, eval=TRUE}
+out
+```
+
+Argh! We get employees from countries other than China! What's gone wrong? We need to worry about the **order of evaluation**. We want the `OR` operation to execute **before** the `AND` operation, and we can enforce this by use of parentheses!
+
+```{sql, connection = db, output.var="out"}
+SELECT * 
+FROM employees 
+WHERE country = 'China' AND (start_date >= '2019-01-01' OR pension_enrol = TRUE);
+```
+```{r, echo=FALSE, eval=TRUE}
+out
+```
+
+That's better! Let's see a few more examples using `AND` and `OR`
+
+<br>
+<center>
+**"Find all employees who work between 0.25 and 0.5 full-time equivalent hours inclusive."**
+</center>
+<br>
+
+```{sql, connection = db, output.var="out"}
+SELECT * 
+FROM employees 
+WHERE fte_hours >= 0.25 AND fte_hours <= 0.5;
+```
+```{r, echo=FALSE, eval=TRUE}
+out
+```
+
+<br>
+<center>
+**"Find all employees who started working for OmniCorp in years other than 2017."**
+</center>
+<br>
+
+```{sql, connection = db, output.var="out"}
+SELECT * 
+FROM employees 
+WHERE start_date < '2017-01-01' OR start_date > '2017-12-31';
+```
+```{r, echo=FALSE, eval=TRUE}
+out
+```
+
+# `BETWEEN`, `NOT` and `IN`
+
+The syntax in the last two examples is clumsy: it would be better to be able to define a range and then `SELECT` for records with fields in/not in that range. The `BETWEEN` keyword lets us do just that!  
+
+Let's rewrite the previous two queries using `BETWEEN`:  
+
+```{sql, connection = db, output.var="out"}
+SELECT * 
+FROM employees 
+WHERE fte_hours BETWEEN 0.25 AND 0.5;
+```
+```{r, echo=FALSE, eval=TRUE}
+out
+```
+
+```{sql, connection = db, output.var="out"}
+SELECT * 
+FROM employees 
+WHERE start_date NOT BETWEEN '2017-01-01' AND '2017-12-31';
+```
+```{r, echo=FALSE, eval=TRUE}
+out
+```
+
+Note these two points:
+
+* the range defined by `BETWEEN` is **inclusive** of the end points. So, in the first example, records with `fte_hours` of exactly 0.25 or 0.5 will be selected
+* we use the `NOT BETWEEN` combination in the second example to select all records with `start_date` not in the range (where, again, the end points are included in the range).
+
+<br>
+<blockquote class="task">
+**Task - 5 mins** 
+
+See if you can work out the query syntax to answer this problem:
+
+<br>
+<center>
+**"Find all employees who started work at OmniCorp in 2016 who work 0.5 full time equivalent hours or greater."**
+</center>
+<br>
+
+<details>
+<summary>**Hint**</summary>  
+You need an `AND` combination of two conditions, one of which involves `BETWEEN`
+</details>
+
+<details>
+<summary>**Solution**</summary>
+
+```{sql, connection = db, output.var="out"}
+--parentheses might help you to see different logical 'levels' of the conditions
+SELECT * 
+FROM employees 
+WHERE (start_date BETWEEN '2016-01-01' AND '2016-12-31') AND (fte_hours >= 0.5);
+```
+```{r, echo=FALSE, eval=TRUE}
+out
+```
+</details>
+</blockquote>
+<br>
+
+The `IN` operator helps us deal with discrete valued fields more efficiently. Consider:
+
+<br>
+<center>**"Find all employees based in Spain, South Africa, Ireland or Germany."**
+</center>
+<br>
+
+The long-winded way to write this is:  
+
+```{sql, connection = db, output.var="out"}
+SELECT * 
+FROM employees 
+WHERE country = 'Spain' OR country = 'South Africa' OR country = 'Ireland' OR country = 'Germany';
+```
+```{r, echo=FALSE, eval=TRUE}
+out
+```
+
+or using `IN`:  
+
+```{sql, connection = db, output.var="out"}
+SELECT * 
+FROM employees 
+WHERE country IN ('Spain', 'South Africa', 'Ireland', 'Germany');
+```
+```{r, echo=FALSE, eval=TRUE}
+out
+```
+
+We can also use `NOT` with `IN`:  
+
+<br>
+<center>**"Find all employees based in countries other than Finland, Argentina or Canada."**
+</center>
+<br>
+
+```{sql, connection = db, output.var="out"}
+SELECT * 
+FROM employees 
+WHERE country NOT IN ('Finland', 'Argentina', 'Canada');
+```
+```{r, echo=FALSE, eval=TRUE}
+out
+```
+
+# `LIKE` and wildcards
+
+Your manager comes to you and says:
+
+<br>
+<center>**"I was talking with a colleague from Greece last month, I can't remember their last name exactly, I think it began 'Mc...' something-or-other. Can you find them?"**
+</center>
+<br>
+
+You can see we're dealing with an **inexact comparison** here. How do we do this in `SQL`? Using the `LIKE` operator with a **wildcard**.  
+
+```{sql, connection = db, output.var="out"}
+SELECT * 
+FROM employees 
+WHERE country = 'Greece' AND last_name LIKE 'Mc%';
+```
+```{r, echo=FALSE, eval=TRUE}
+out
+```
+
+The string after `LIKE` is called a **pattern**, so in this case, the pattern is `'Mc%``
+
+Here are the wildcards we can use in a pattern:  
+
+| Wildcard | Meaning |
+| --- | --- |
+| _ | a single character |
+| % | zero or more characters |
+
+We can place wildcards **anywhere** inside the pattern:  
+
+<br>
+<center>**"Find all employees with last names containing the phrase 'ere' anywhere."**
+</center>
+<br>
+
+```{sql, connection = db, output.var="out"}
+SELECT * 
+FROM employees 
+WHERE last_name LIKE '%ere%';
+```
+```{r, echo=FALSE, eval=TRUE}
+out
+```
+
+<br>
+<center>**"Find all employees in the Legal department with a last name beginning with 'D'."**
+</center>
+<br>
+
+```{sql, connection = db, output.var="out"}
+SELECT * 
+FROM employees 
+WHERE department = 'Legal' AND last_name LIKE 'D%';
+```
+```{r, echo=FALSE, eval=TRUE}
+out
+```
+
+<br>
+<blockquote class="task">
+**Task - 2 mins** 
+
+Write a query using `LIKE` and wildcards to answer:
+  
+<br>
+<center>**"Find all employees having 'a' as the second letter of their first names."**
+</center>
+<br>
+  
+<details>
+<summary>**Hint**</summary> 
+You can use a '_' wildcard for the first letter of `first_name`.  
+</details>
+  
+<details>
+<summary>**Solution**</summary>
+
+```{sql, connection = db, output.var="out"}
+SELECT * 
+FROM employees 
+WHERE first_name LIKE '_a%';
+```
+```{r, echo=FALSE, eval=TRUE}
+out
+```
+
+</details>
+</blockquote>
+<br>
+
+`LIKE` distinguishes between capital and lower case letters. If we need a case-insensitive version, we can use `ILIKE`:
+
+<br>
+<center>**"Find all employees whose last name contains the letters 'ha' anywhere."**
+</center>
+<br>
+
+```{sql, connection = db, output.var="out"}
+SELECT * 
+FROM employees 
+WHERE last_name ILIKE '%ha%';
+```
+```{r, echo=FALSE, eval=TRUE}
+out
+```
+
+# `IS NULL`
+
+<br>
+<center>**"We need to ensure our employee records are up-to-date. Find all the employees who do not have a listed email address."**
+</center>
+<br>
+
+We can use the `IS NULL` condition to fulfill this request:
+
+```{sql, connection = db, output.var="out"}
+SELECT * 
+FROM employees 
+WHERE email IS NULL;
+```
+```{r, echo=FALSE, eval=TRUE}
+out
+```
+
+We can use the `NOT` operator here too: `IS NOT NULL` is a valid condition!
+
+# Recap - Full query syntax
+
+In summary, here are the different keyword components of a `SELECT` query, the order in which they must appear, and whether they are required or optional <br>
+
+This table shows where we got to in this lesson:  
+
+| Order | Keyword | Specifies | Required? |
+| --- | --- |--- | --- |
+| 1 | SELECT | Column to query | Yes |
+| 2 | FROM | Table to query |  Yes |
+| 3 | WHERE | Row-level filter | No |
+
+
+and here's a look at what's still to come:  
+
+| Order | Keyword | Specifies | Required? |
+| --- | --- |--- | --- |
+| 5 | GROUP BY| Grouping for aggregates | No |
+| 6 | HAVING | Group-level filter | No |
+| 7 | ORDER BY | Sort order | No |
+| 8 | LIMIT | How many records to return | No |
+
+
+
+
+
+
