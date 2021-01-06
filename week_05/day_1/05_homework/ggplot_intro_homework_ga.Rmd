@@ -1,0 +1,96 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+### 1
+```{r}
+library(tidyverse)
+library(CodeClanData)
+```
+
+```{r}
+backpack <- backpack
+```
+
+```{r}
+glimpse(backpack)
+```
+### 2
+```{r}
+ggplot(backpack) +
+  geom_bar(aes(x = backpack_weight), fill = "light blue")+
+  xlab("Backpack weight") +
+  ylab("Number of students")
+```
+## Plot shows the distribution of backpack weights across the students sampled
+
+### 3
+```{r}
+ggplot(backpack) +
+  geom_bar(aes(x = backpack_weight),  fill = "light blue") +
+  facet_wrap(~ sex) +
+  xlab("Backpack weight") +
+  ylab("Number of students")
+```
+## Plot shows the distribution of backpack weights across the students sampled split between gender
+
+### 4
+```{r}
+ggplot(backpack) +
+  aes(backpack_weight, body_weight) +
+  geom_point() +
+  xlab("Backpack weight") +
+  ylab("Body weight")
+```
+
+## Plot shows the relationship between the weight of the individual and weight of the backpack carried across all students sampled. 
+
+### 5
+```{r}
+ggplot(backpack) +
+  aes(backpack_weight, body_weight, colour = sex) +
+  geom_point() +
+  xlab("Backpack weight") +
+  ylab("Body weight")
+```
+## Plot shows the relationship between the weight of the individual and weight of the backpack carried across all students sampled split by gender. A clear grouping of females in the lower weight range is evident but males show similar back pack weights but with more outliers in the higher ranher of both variables 
+
+### 6
+```{r}
+backpack$back_problems <- as.factor(backpack$back_problems)
+
+ggplot(backpack, aes(x='', fill=back_problems)) + geom_bar(position = "fill")+
+  xlab("") +
+  ylab("Proportion")
+
+
+```
+## Plot shows proportion of all students reporting issues with back pain
+
+
+### 7
+```{r}
+backpack$back_problems <- as.factor(backpack$back_problems)
+
+ggplot(backpack, aes(x='', fill=back_problems)) + geom_bar(position = "fill") +
+  facet_wrap(~ sex) +
+  xlab("") +
+  ylab("Proportion")
+
+```
+## Plot shows proportion of all students reporting issues with back pain split between gender. Females clearly show a marked higher reporting of back issues.
+
+
+
+### 8
+```{r}
+ggplot(backpack) +
+  aes(backpack_weight, body_weight, colour = sex, size = ratio) +
+  geom_point() +
+  facet_wrap(~ back_problems, labeller = "label_both") +
+  xlab("Backpack weight") +
+  ylab("Body Weight")
+```
+## Plot shows the distribution of backpack weight and body weight by gender, split between those reporting back problems and ratio of backpack weight to body weight shown by the size of each point.
+
+
