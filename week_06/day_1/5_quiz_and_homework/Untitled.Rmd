@@ -1,0 +1,76 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+library(prob)
+library(gtools)
+library(tidyverse)
+```
+
+```{r}
+titanic <- read_csv("data/titanic.csv")
+glimpse(titanic)
+```
+```{r}
+titanic %>% 
+  mutate( crew = case_when(class != "1st" | "2nd" | "3rd"        ~ "crew"))
+```
+
+
+
+
+2 MVP and Extension - Probability problems
+
+1. 
+
+probability of number less than 5
+
+4/6 ~ 2/3 ~ 0.66667
+
+
+2.
+```{r}
+rolldie(3)
+```
+216
+
+3.
+i
+```{r}
+die_4 <- rolldie(4)
+die_4
+```
+
+```{r}
+
+total_equals_5_6_7 <- die_4 %>%
+  filter(X1 + X2 + X3 + X4 == 7 | X1 + X2 + X3 + X4 == 6 | X1 + X2 + X3 + X4 == 5)
+
+
+total_equals_5_6_7 %>%
+  summarise(size_of_event_space = n())
+```
+ii
+```{r}
+34/1296
+```
+
+iii
+assuming ordering of the die is unimportant (ie x1=2, x2=1, x3=1, x4=1 is not same as x1=1, x2=2, x3=1, x4=1)
+
+4
+```{r}
+permutations(
+    n = 5, 
+    r = 5, 
+     
+    repeats.allowed = FALSE)
+```
+
+120 in sample space but only 2 that are 1,2,3,4,5 or 5,4,3,2,1
+```{r}
+2/120
+
+```
+
