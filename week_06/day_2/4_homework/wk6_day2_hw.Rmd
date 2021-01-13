@@ -1,0 +1,95 @@
+---
+title: "week6_day_@HOmework_GA"
+output: html_notebook
+---
+```{r}
+library(janitor)
+library(tidyverse)
+```
+# MVP
+Q1
+```{r}
+phone_data <- read_csv("data/20190928-items.csv") %>% 
+  clean_names()
+```
+
+```{r}
+head(phone_data)
+glimpse(phone_data)
+```
+Q2
+```{r}
+phone_data %>% 
+count(brand)
+```
+Samsung
+
+Q3
+```{r}
+samsung <- phone_data %>% 
+  filter( brand == "Samsung") %>% 
+  select(title, rating, total_reviews)
+```
+
+```{r}
+samsung_stats <- samsung  %>% 
+summarise(
+    num = n(),
+    mean = mean(rating),
+    sd = sd(rating)
+  )
+samsung_stats
+```
+
+```{r}
+samsung %>%
+  ggplot(aes(x = rating)) +
+  geom_histogram(aes(y = ..density..), col = "white", bins = 25)
+```
+
+```{r}
+samsung %>%
+  ggplot(aes(x = rating)) +
+  geom_histogram(aes(y = ..density..), col = "white", bins = 25) +
+  stat_function(
+    fun = dnorm, 
+    args = list(
+      mean = samsung_stats$mean, 
+      sd = samsung_stats$sd
+    ),
+    col = "red"
+  )  
+```
+Normal distribution does seem to be a fairly good model although there is perhaps evidence of bimodality around 5 as a rating 
+
+
+Q4
+```{r}
+samsung %>%
+  filter(rating >= samsung_stats$mean - samsung_stats$sd) %>%
+  filter(rating <= samsung_stats$mean + samsung_stats$sd) %>%
+  summarise(prop_within_1sd = n() / nrow(samsung))
+
+samsung %>%
+  filter(rating >= samsung_stats$mean - 2 * samsung_stats$sd) %>%
+  filter(rating <= samsung_stats$mean + 2 * samsung_stats$sd) %>%
+  summarise(prop_within_2sd = n() / nrow(samsung))
+
+samsung %>%
+  filter(rating >= samsung_stats$mean - 3 * samsung_stats$sd) %>%
+  filter(rating <= samsung_stats$mean + 3 * samsung_stats$sd) %>%
+  summarise(prop_within_3sd = n() / nrow(samsung))
+```
+
+
+
+Ext
+What is a ‘quantile-quantile plot’?
+Teststo check if 2 data sets fit the same distribution
+
+What do we expect to see in a qqnorm() plot if data is nearly normally distributed?
+plot is roughly a 45degree staright line from the origin
+```{r}
+
+```
+
