@@ -1,0 +1,204 @@
+---
+title: "Hypothesis tests & probability - homework"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(infer)
+library(skimr)
+data(msleep)
+```
+
+1.1 Hypothesis testing - practical
+
+```{r}
+sleep_data <- select(msleep, name, sleep_total)
+```
+
+```{r}
+skim(sleep_data)
+sleep_data %>% 
+ggplot(aes(x = sleep_total)) +
+  geom_histogram(binwidth = 2, color = "white") 
+
+  boxplot(sleep_data$sleep_total)
+```
+Roughly normal distribution, over 30 samples (83) and independent observations so 1 sample t test is applicable
+
+H0: μsleep_total = 7.0
+Hα: μsleep_total ≠ 7.0
+α = 0.05
+```{r}
+t_stat_infer <- sleep_data %>%
+  t_stat(response = sleep_total, mu = 7) 
+
+t_stat_infer
+```
+```{r}
+null_distribution_sleep_total <- sleep_data %>% 
+  specify(response = sleep_total) %>% 
+  hypothesize(null = "point", mu = 7) %>% 
+  calculate(stat = "t") 
+
+head(null_distribution_sleep_total)
+```
+
+```{r}
+null_distribution_sleep_total %>%
+  visualize(method = "theoretical") + 
+  shade_p_value(obs_stat = t_stat_infer, direction = "both") 
+```
+
+```{r}
+t_test_results <- sleep_data %>%
+  t_test(response = sleep_total, alternative = "two.sided", mu = 7.00)
+
+t_test_results
+```
+ p < 0.05 so null hypothesis can be rejected and conclude that jabberwockies sleep significantly different from the overall population mean.
+
+#Perform an appropriate statistical test to determine whether omnivores sleep for significantly longer than herbivores, on average.
+
+H0 : μsleep_total(omni)−μsleep_total(herbi)=0
+Ha : μsleep_total(omni)−μsleep_total(herbi)<0
+α = 0.05  
+
+```{r}
+msleep %>%
+  group_by(vore) %>%
+  summarise(n = n())
+```
+
+```{r}
+vore_sleep <- msleep %>%
+  filter(vore == "omni" | vore == "herbi") 
+
+vore_sleep
+```
+
+```{r}
+vore_sleep %>%
+  ggplot(aes(y = sleep_total, x = vore)) +
+  geom_boxplot()
+```
+Caqlculate null distribution
+```{r}
+null_distribution_vore <- vore_sleep %>% 
+  specify(sleep_total ~ vore) %>% 
+  hypothesise(null = "independence") %>% 
+  generate(reps = 1000, type = "permute") %>% 
+  calculate(stat = "diff in means", order = c("omni", "herbi")) 
+
+head(null_distribution_vore)
+```
+Observed statistic
+
+```{r}
+observed_stat_vore <- vore_sleep %>% 
+  specify(sleep_total ~ vore) %>%
+  calculate(stat = "diff in means", order = c("omni", "herbi"))
+  
+observed_stat_vore
+```
+
+```{r}
+null_distribution_vore %>%
+  visualise() +
+  shade_p_value(obs_stat = observed_stat_vore, direction = "left")
+```
+Calculate p value
+```{r}
+p_value_vore <- null_distribution_vore %>%
+  get_p_value(obs_stat = observed_stat_vore, direction = "left")
+p_value_vore
+```
+
+p > 0.05 so null hypothesis cannot be rejected and conclude omnivores do not sleep significantly longer than herbivores on average
+
+# Perform an appropriate statistical test to determine whether the proportion of domesticated animal types in the population of animal types is greater than 5%.
+
+
+Assuming animal types refers to omniverous and herbivorous categories from previous question
+
+Create is_domesticated variable
+```{r}
+domesticated <- vore_sleep %>% 
+  mutate(is_domesticated = if_else(conservation == "domesticated" & !is.na(conservation), "yes", "no")) 
+```
+
+H0: πall_animal−πdomesticated_animal=0
+Ha: πall_animal−πdomesticated_animal≠0
+α = 0.05
+
+```{r}
+ggplot(domesticated, aes(x = vore, fill = is_domesticated)) +
+  geom_bar(position = "fill") +
+  coord_flip()
+```
+
+```{r}
+observed_stat_dom <- domesticated %>% 
+  specify(is_domesticated ~ vore, success = "yes") %>% 
+  calculate(stat = "diff in props", order = c("herbi", "omni"))
+
+observed_stat_dom
+```
+
+```{r}
+null_distribution_dom <- domesticated %>%
+  specify(is_domesticated ~ vore, success = "yes") %>% 
+  hypothesize(null = "independence") %>% 
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "diff in props", order = c("herbi", "omni"))
+
+head(null_distribution_dom)
+```
+
+```{r}
+null_distribution_dom %>%
+  visualise() +
+  shade_p_value(obs_stat = observed_stat_dom, direction = "right")
+```
+
+```{r}
+p_value_dom <- null_distribution_dom %>%
+  get_p_value(obs_stat = observed_stat_dom, direction = "right")
+
+p_value_dom
+```
+
+Just realised I've probably just worked out the wrong thing the wrong way,hmmm
+
+
+#1.2 Hypothesis testing - interpretation
+#1.2.1 Defining the Hypothesis
+
+1
+H0: πknow of coffee shop >=0.40
+Ha: πknow of coffee shop≠0.40
+
+method = simulate
+
+2
+H0: πbanner_top−πbanner_right=0
+Ha: πbanner_top−πbanner_right>0
+
+method = permutation
+
+3
+H0: μpart_width = 145mm
+Ha: μpart_width ≠ 145mm
+
+method = bootstrapping
+
+#1.2.2 Interpreting the results
+
+1. Coffee shop problem. Significance level: 0.05, calculated p-value: 0.07
+p greater than 0.05 therefore null hypothesis confirmed i.e. not able to confirm less than 40% of population know of the coffee shop.
+
+2. Website company problem. Significance level: 0.01, p-value: 0.006
+p less than 0.001 therefore null hypothesis rejected i.e. Users are more likely to click banner at top of the page.
+
+3. Manufacturing company problem. Significance level: 0.05, p-value: 0.55
+p more than 0.05 therefore null hypothesis confirmed i.e. manufacturing process has not significantly drifted from 145mm
