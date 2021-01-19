@@ -1,0 +1,113 @@
+---
+title: "Communicating Data - part 1"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+    df_print: paged
+    css: ../../../styles.css
+  pdf_document: default
+---
+
+<br>
+
+For this homework you will be creating a report answering questions about the `nyc_bikes` dataset from the `tsibbledata` package. Tomorrow's homework will be to add further visualisations and refine this report. On Wednesday, you will get the opportunity to present your report. Your report can be created within R Markdown and knitted to either PDF or HTML. You can refer back to our lesson on R Markdown for tips on formatting code and plots. [This tutorial](https://bookdown.org/yihui/rmarkdown/) as well as the [R Markdown cheat sheet](https://rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf) are also really useful points of reference when it comes to formatting.
+
+
+You can read more about the dataset [here](https://rdrr.io/github/tidyverts/tsibbledata/man/nyc_bikes.html) or by looking at the helpfile using `?nyc_bikes`. You can read more about the company the data comes from on the [NYC Citi Bike website](https://www.citibikenyc.com/about)
+
+<br>
+
+<div class="emphasis">
+
+**Note:** Completing this report and presenting it is required for the PDA, however the specifics of the tasks are yet to be approved by the SQA. PDA-specific requirements are listed at the bottom of this document (you don't have to meet all of them tonight, as you will add stuff for tomorrow's homework).
+
+</div>
+
+# Business questions
+
+In your report, please consider the following questions:
+
+* What is the pattern of bike hires over time (e.g. within a year, month, week, or day)?
+* Do bike hire patterns differ between bike rider demographics? (e.g. gender, type of trip, age)
+* Any other insights?
+
+For every visualisation you create, consider whether and how it can provide actionable insights to the business (in this case NYC Citi Bike, a bike share operator) and how it relates to key performance indicators (in this case the overall objective is to increase bike hires). Also, remember to include a description and interpretation of each plot so as to explain the context and insights. 
+
+# Getting started
+
+Here's how you can read in the data:
+```{r, warning = F, message = F}
+library(tsibbledata)
+nyc_bikes_df <- nyc_bikes
+```
+
+
+# Task hints
+
+* You will probably want to use the data in column `start_time` to create `date`, `month` and `year` columns.
+* Summarising the data by aggregating hire counts by different measures of time (e.g. year, quarter, month, day) and then visualising the results is probably a good idea
+* When grouping time series data (tsibble), you need to use `index_by` instead of `group_by`
+
+# Report tips
+
+* You may want to introduce the dataset in the beginning of the report and include some documentation as well as showing a consideration of data ethics (necessary for PDA presentation)
+* Make sure axis, legend and plot titles make sense and that plots are overall easy to understand for a non-technical audience.
+* You also probably don't want any code visible in your report since it's for a non-technical audience. You can hide code using either `echo = FALSE` in the setup chunk
+
+```{r setup, eval = F}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+* OR by setting code folding to 'hide' in the YAML header (allows user to see code if desired)
+```
+---
+output:
+  html_document:
+    code_folding: hide
+---
+```
+* You may want to finish off your report with something like 'Conclusions' or 'Main insights'. These will be useful for your presentation as well.
+* Remember to structure your report according to a logical narrative (will also help with presentation).
+
+# PDA Requirements
+
+<br>
+
+**The visualisations must collectively satisfy the following criteria:**
+
+1. The visualisations must illustrate relationships and patterns in the data. All the plots you have been taught to make will will do this. For example: a histogram will illustrate the pattern in how a variable is distributed and a scatter graph will illustrate the relationship between two variables.
+
+
+2. The visualisations must be well designed and aesthetically pleasing. This is somewhat subjective, but please keep your plots tidy with titles and labels and stick to a consistant colour scheme.
+
+
+3. The visualisations must have high information content. A graph that illustrates a single number does not have a high information content. Your graphs should be useful for helping people understand important parts of the data.
+
+
+4. The visualisations must provide accurate insights into the dataset. Be careful not to provide misleading graphs. For example, do not use a smoothed line with no data points, if the smoothed line does not accuratly represent the data.
+
+5. The visualisations must adhere to graphical conventions. You might want to look back at our lessons on best practices for graphs. 
+
+6. The visualisations must include geospatial and time series visualisations.
+
+<br>
+
+**The presentation must satisfy the following criteria.**
+
+1. The presentation must be appropriate for a non-technical audience. Make you you do not use technical terms without explaining them. Imagine that your audience is intelligent, but has never studied any statistics.
+
+2. The presentation must tell a story in data that addresses specific business questions. Focus your presentation on answering a question, or a series of questions. Try not to include information outside of this, even if it is interesting. Your audience should be able to leave with one or two key ideas clear in their mind. 
+
+3. The presentation must minimise complexity. You only have a short amount of time to get your point across. Try to stick to clear, unambiguous conclusions.  
+
+4. The presentation must have high information content. One or two numbers will not be enough. But balance this information content against being overly complex. 
+
+5. The presentation must identify key performance indicators. What do you think are the most important metrics in this dataset? Make sure you discuss them in your presentation.
+
+6. The presentation must provide insights into the dataset. It is very important that you use the dataset provided and draw your information from there. 
+
+7. The presentation must provide data-driven conclusions or recommendations. Take your insights and try to form them into conclusions and recommendations. But make sure those conclusions come from the data, and not from your own speculating. 
+
+8. The presentation must demonstrate that data ethics has been considered. Think about what you learnt on the data ethics day: do any of those ideas apply in this situation.

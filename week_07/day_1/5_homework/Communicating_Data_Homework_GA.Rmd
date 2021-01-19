@@ -1,0 +1,83 @@
+---
+title: "Communicating Data"
+output: html_notebook
+---
+
+```{r}
+library(lubridate)
+library(tsibble)
+library(tsibbledata)
+library(tidyverse)
+library(slider)
+library(geosphere)
+
+
+nyc_bikes_df <- nyc_bikes
+```
+
+1 Business questions
+In your report, please consider the following questions:
+
+What is the pattern of bike hires over time (e.g. within a year, month, week, or day)?
+
+Do bike hire patterns differ between bike rider demographics? (e.g. gender, type of trip, age)
+
+Any other insights?
+
+For every visualisation you create, consider whether and how it can provide actionable insights to the business (in this case NYC Citi Bike, a bike share operator) and how it relates to key performance indicators (in this case the overall objective is to increase bike hires). Also, remember to include a description and interpretation of each plot so as to explain the context and insights.
+
+```{r}
+glimpse(nyc_bikes_df) 
+
+
+```
+```{r}
+index_var(nyc_bikes_df)
+```
+
+```{r}
+
+
+nyc_bikes_df <- nyc_bikes_df %>% 
+  mutate(date = date(start_time), week = week(start_time), month = month(start_time, label = TRUE, abbr = FALSE), year = year(start_time)) %>% 
+  mutate(day_length = daylength(start_lat, date)) %>% 
+  mutate(
+    distance =  distGeo(
+                    matrix(c(start_long, start_lat), ncol = 2),                     matrix(c(end_long, end_lat), ncol = 2)
+                        )
+        )
+```
+
+```{r}
+#bike hire pattern within year
+nyc_bikes_df %>% 
+index_by(week) %>% 
+  summarise(
+    mean_distance = mean(distance)
+  ) %>% 
+ggplot() +
+  aes(x = week, y = mean_distance)+
+  geom_line()
+
+```
+```{r}
+nyc_bikes_df %>% 
+index_by(day) %>% 
+  summarise(
+   no_of_hires = n()
+  ) %>% 
+ggplot() +
+  #aes(x = week)+
+  #geom_line(aes(y = no_of_hires))+
+  geom_line(aes(x = no_of_hires, y = day_length, colour = "red"))
+```
+
+```{r}
+bike_distance <- nyc_bikes_df %>% 
+  select(bike_id, distance) %>% 
+group_by(bike_id) %>% 
+  summarise(
+    mean_distance = sum(distance)
+  )
+```
+
