@@ -1,0 +1,5 @@
+"0","pp_and_ss_books %>%"
+"0","  anti_join(stop_words) %>%"
+"0","  count(word, sort = TRUE)"
+"2","Joining, by = ""word""
+"

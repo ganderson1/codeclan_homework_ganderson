@@ -1,0 +1,32 @@
+{
+    "id": "97E24B5A",
+    "path": null,
+    "project_path": null,
+    "type": "r_dataframe",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1613956366449.0,
+    "source_on_save": false,
+    "relative_order": 4,
+    "properties": {
+        "expression": "cp_sentence_sentiments",
+        "caption": "cp_sentence_sentiments",
+        "totalObservations": 4439,
+        "displayedObservations": 4439,
+        "variables": 5,
+        "cacheKey": "6884BFDF",
+        "object": "cp_sentence_sentiments",
+        "environment": "",
+        "contentUrl": "grid_resource/gridviewer.html?env=&obj=cp_sentence_sentiments&cache_key=6884BFDF&max_cols=50",
+        "preview": 0
+    },
+    "folds": "",
+    "lastKnownWriteTime": 4315897448,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1613956366449,
+    "read_only": false,
+    "read_only_alternatives": []
+}

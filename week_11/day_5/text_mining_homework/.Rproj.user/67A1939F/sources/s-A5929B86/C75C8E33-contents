@@ -1,0 +1,186 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(tidytext)
+library(janeaustenr)
+library(textdata)
+```
+Find the most common words in both Pride & Prejudice and Sense & Sensibility.
+```{r}
+p_and_s <- list(prideprejudice, sensesensibility)
+
+pp_and_ss_books <- purrr::map_chr(p_and_s, paste, collapse = " ")
+pp_and_ss_books<- paste(pp_and_ss_books, collapse = " ")
+
+pp_and_ss_books <- tibble(
+  id = 1:length(pp_and_ss_books),
+  text = pp_and_ss_books
+) %>% 
+  unnest_tokens(word, text)
+
+pp_and_ss_books %>%
+  count(word, sort = TRUE)
+
+
+```
+Find the most common words in both Pride & Prejudice and Sense & Sensibility, not including stop words.
+```{r}
+pp_and_ss_books %>%
+  anti_join(stop_words) %>%
+  count(word, sort = TRUE)
+```
+Find the most common sentiment words in both Pride & Prejudice and Sense & Sensibility.
+```{r}
+pp_and_ss_sentiments <- pp_and_ss_books %>%
+  inner_join(get_sentiments("bing"))%>%
+  count(word, sort = TRUE)
+
+pp_and_ss_sentiments
+```
+
+Add "miss" as stop word as features heavily when referring to characters but has sentiment value so skews results
+```{r}
+
+
+custom_stop_words <- bind_rows(tibble(word = c("miss"),  
+                                      lexicon = c("custom")), 
+                               stop_words)
+```
+
+```{r}
+
+pride_book <- tibble(
+  text = prideprejudice,
+    # treat each row as sentence
+    sentence = 1:length(prideprejudice)
+) %>% 
+  unnest_tokens(word, text) %>% 
+  anti_join(custom_stop_words) 
+
+sense_book <- tibble(
+  text = sensesensibility,
+    # treat each row as sentence
+    sentence = 1:length(sensesensibility)
+) %>% 
+  unnest_tokens(word, text) %>% 
+  anti_join(custom_stop_words) 
+
+emma_book <- tibble(
+  text = emma,
+    # treat each row as sentence
+    sentence = 1:length(emma)
+) %>% 
+  unnest_tokens(word, text) %>% 
+  anti_join(custom_stop_words) 
+
+mansfield_book <- tibble(
+  text = mansfieldpark,
+    # treat each row as sentence
+    sentence = 1:length(mansfieldpark)
+) %>% 
+  unnest_tokens(word, text) %>% 
+  anti_join(custom_stop_words) 
+```
+
+```{r}
+pride_sentiments <- pride_book  %>%
+  inner_join(get_sentiments("afinn"))
+
+sense_sentiments <- sense_book  %>%
+  inner_join(get_sentiments("afinn"))
+
+emma_sentiments <- emma_book  %>%
+  inner_join(get_sentiments("afinn"))
+
+mansfield_sentiments <- mansfield_book  %>%
+  inner_join(get_sentiments("afinn"))
+```
+```{r}
+p_sentence_sentiments <- pride_sentiments %>%
+  group_by(sentence) %>%
+  summarise(sum_sentiment = sum(value)) %>% 
+  mutate(running_total = cumsum(sum_sentiment)) %>% 
+  mutate(book = "pride and prejudice") %>%
+  mutate(story_position = sentence/max(sentence)) # all books on scale from 0 to 1
+
+
+
+s_sentence_sentiments <- sense_sentiments %>%
+  group_by(sentence) %>%
+  summarise(sum_sentiment = sum(value)) %>% 
+  mutate(running_total = cumsum(sum_sentiment)) %>% 
+  mutate(book = "sense and sensibility") %>%
+  mutate(story_position = sentence/max(sentence)) # all books on scale from 0 to 1
+
+e_sentence_sentiments <- emma_sentiments %>%
+  group_by(sentence) %>%
+  summarise(sum_sentiment = sum(value)) %>% 
+  mutate(running_total = cumsum(sum_sentiment)) %>% 
+  mutate(book = "emma") %>%
+  mutate(story_position = sentence/max(sentence)) # all books on scale from 0 to 1
+
+m_sentence_sentiments <- mansfield_sentiments %>%
+  group_by(sentence) %>%
+  summarise(sum_sentiment = sum(value)) %>% 
+  mutate(running_total = cumsum(sum_sentiment)) %>% 
+  mutate(book = "mansfield park") %>%
+  mutate(story_position = sentence/max(sentence)) # all books on scale from 0 to 1
+
+sentence_sentiments <- rbind(p_sentence_sentiments, s_sentence_sentiments, e_sentence_sentiments, m_sentence_sentiments)
+  
+```
+
+```{r}
+ggplot(sentence_sentiments) +
+  aes(x = story_position, y = running_total, color = book) +
+  
+  geom_smooth()
+  
+```
+Comparing with Crime and Punishment by Fyodor Dostoevsky. Never managed to get very far into it as it was pretty intense.
+
+Used gutenbergr package to pull in full text from Project Gutenberg (https://www.gutenberg.org/)
+
+
+```{r}
+library(gutenbergr)
+
+gutenberg_metadata %>%
+  filter(title == "Crime and Punishment")
+```
+
+```{r}
+
+
+
+
+crime_and_punishment <- gutenberg_download(2554) %>%
+  mutate(text = iconv(text, to = 'latin1')) %>% 
+  select(-gutenberg_id) %>% 
+  drop_na(text) %>% 
+  mutate(sentence = 1:14770) %>% 
+  unnest_tokens(word, text) %>% 
+  anti_join(custom_stop_words)  
+
+cp_sentiments <- crime_and_punishment  %>%
+  inner_join(get_sentiments("afinn"))
+
+cp_sentence_sentiments <- cp_sentiments %>%
+  group_by(sentence) %>%
+  summarise(sum_sentiment = sum(value)) %>% 
+  mutate(running_total = cumsum(sum_sentiment)) %>% 
+  mutate(book = "crime and punishment") %>%
+  mutate(story_position = sentence/max(sentence)) # all books on scale from 0 to 1
+
+all_sentence_sentiments <- rbind(sentence_sentiments, cp_sentence_sentiments)
+
+ggplot(all_sentence_sentiments) +
+  aes(x = story_position, y = running_total, color = book) +
+    geom_smooth()
+
+```
+Probably for the best i never finished it....

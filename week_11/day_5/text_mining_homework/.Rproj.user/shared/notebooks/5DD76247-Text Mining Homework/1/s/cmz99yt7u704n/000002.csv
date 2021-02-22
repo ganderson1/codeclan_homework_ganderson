@@ -1,0 +1,5 @@
+"0","library(gutenbergr)"
+"2","package ‘gutenbergr’ was built under R version 3.6.2"
+"0","custom_stop_words <- bind_rows(tibble(word = c(""miss""),  "
+"0","                                      lexicon = c(""custom"")), "
+"0","                               stop_words)"

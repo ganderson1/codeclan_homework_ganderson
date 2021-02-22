@@ -1,0 +1,4 @@
+"0","ggplot(sentence_sentiments) +"
+"0","  aes(x = story_position, y = running_total, color = book) +"
+"0","  "
+"0","  geom_smooth()"
